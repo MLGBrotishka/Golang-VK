@@ -1,0 +1,769 @@
+openapi: 3.0.0
+info:
+  title: Фильмотека API
+  description: API Фильмотеки
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /actor/:
+    get:
+      tags:
+      - actor
+      description: Возвращает актёра
+      parameters:
+      - name: actor_id
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/ActorId'
+      responses:
+        "200":
+          description: id нового актера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Actor'
+        "400":
+          description: Неверный формат входных данных
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: Актер не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - ApiKeyAuth: []
+    put:
+      tags:
+      - actor
+      description: Изменение актера
+      parameters:
+      - name: actor_id
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/ActorId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Actor'
+        required: true
+      responses:
+        "200":
+          description: Id актера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActorId'
+        "400":
+          description: Неверный формат входных данных
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: Актер не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - ApiKeyAuth: []
+    post:
+      tags:
+      - actor
+      description: Добавляет актёра
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Actor'
+        required: true
+      responses:
+        "200":
+          description: Id актера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActorId'
+        "400":
+          description: Неверный формат входных данных
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - ApiKeyAuth: []
+    delete:
+      tags:
+      - actor
+      description: Удаление актера
+      parameters:
+      - name: actor_id
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/ActorId'
+      responses:
+        "200":
+          description: Успешно удален
+        "400":
+          description: Неверный формат входных данных
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: Актер не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - ApiKeyAuth: []
+  /actors/:
+    get:
+      tags:
+      - List
+      description: Возвращает список актёров
+      responses:
+        "200":
+          description: Информация об актёрах
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActorList'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - ApiKeyAuth: []
+  /movie/:
+    get:
+      tags:
+      - movie
+      description: Возвращает фильм
+      parameters:
+      - name: movie_id
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/MovieId'
+      responses:
+        "200":
+          description: Пустая структура
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+        "400":
+          description: Неверный формат входных данных
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: Фильм не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - ApiKeyAuth: []
+    put:
+      tags:
+      - movie
+      description: Обновляет информацию о фильме
+      parameters:
+      - name: movie_id
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/MovieId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+        required: true
+      responses:
+        "200":
+          description: Id фильма
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieId'
+        "400":
+          description: Неверный формат входных данных
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: Фильм не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - ApiKeyAuth: []
+    post:
+      tags:
+      - movie
+      description: Добавляет фильм
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+        required: true
+      responses:
+        "200":
+          description: Id фильма
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieId'
+        "400":
+          description: Неверный формат входных данных
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: Актер не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - ApiKeyAuth: []
+    delete:
+      tags:
+      - movie
+      description: Удаление фильма
+      parameters:
+      - name: movie_id
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/MovieId'
+      responses:
+        "200":
+          description: Успешно удален
+        "400":
+          description: Неверный формат входных данных
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: Фильм не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - ApiKeyAuth: []
+  /movies/:
+    get:
+      tags:
+      - List
+      description: Возвращает список фильмов
+      parameters:
+      - name: sort_by
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SortBy'
+      responses:
+        "200":
+          description: Информация о фильмах
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieList'
+        "400":
+          description: Неверный формат входных данных
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "403":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - ApiKeyAuth: []
+components:
+  schemas:
+    ActorId:
+      type: string
+      description: Уникальный id актера
+    MovieId:
+      type: string
+      description: Уникальный id фильма
+    FullName:
+      required:
+      - first_name
+      - second_name
+      type: object
+      properties:
+        first_name:
+          type: string
+        second_name:
+          type: string
+        last_name:
+          type: string
+      description: ФИО актера
+      example:
+        second_name: second_name
+        last_name: last_name
+        first_name: first_name
+    Gender:
+      type: string
+      enum:
+      - ""
+      - male
+      - female
+      x-enum-varnames:
+      - Unknown
+      - Male
+      - Female
+    Actor:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/ActorId'
+        name:
+          $ref: '#/components/schemas/FullName'
+        gender:
+          $ref: '#/components/schemas/Gender'
+        movies:
+          type: array
+          items:
+            $ref: '#/components/schemas/MovieId'
+        birthDate:
+          type: string
+          format: date
+      example:
+        movies:
+        - movies
+        - movies
+        gender: ""
+        name:
+          second_name: second_name
+          last_name: last_name
+          first_name: first_name
+        id: id
+        birthDate: 2000-01-23
+    ActorList:
+      required:
+      - list
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/Actor'
+      example:
+        list:
+        - movies:
+          - movies
+          - movies
+          gender: ""
+          name:
+            second_name: second_name
+            last_name: last_name
+            first_name: first_name
+          id: id
+          birthDate: 2000-01-23
+        - movies:
+          - movies
+          - movies
+          gender: ""
+          name:
+            second_name: second_name
+            last_name: last_name
+            first_name: first_name
+          id: id
+          birthDate: 2000-01-23
+    Movie:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/MovieId'
+        title:
+          maxLength: 150
+          minLength: 1
+          type: string
+        description:
+          maxLength: 1000
+          type: string
+        release_date:
+          type: string
+          format: date
+        rating:
+          maximum: 10
+          minimum: 1
+          type: integer
+        actors:
+          $ref: '#/components/schemas/ActorList'
+      example:
+        actors:
+          list:
+          - movies:
+            - movies
+            - movies
+            gender: ""
+            name:
+              second_name: second_name
+              last_name: last_name
+              first_name: first_name
+            id: id
+            birthDate: 2000-01-23
+          - movies:
+            - movies
+            - movies
+            gender: ""
+            name:
+              second_name: second_name
+              last_name: last_name
+              first_name: first_name
+            id: id
+            birthDate: 2000-01-23
+        release_date: 2000-01-23
+        rating: 1
+        description: description
+        id: id
+        title: title
+    MovieList:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/Movie'
+      example:
+        list:
+        - actors:
+            list:
+            - movies:
+              - movies
+              - movies
+              gender: ""
+              name:
+                second_name: second_name
+                last_name: last_name
+                first_name: first_name
+              id: id
+              birthDate: 2000-01-23
+            - movies:
+              - movies
+              - movies
+              gender: ""
+              name:
+                second_name: second_name
+                last_name: last_name
+                first_name: first_name
+              id: id
+              birthDate: 2000-01-23
+          release_date: 2000-01-23
+          rating: 1
+          description: description
+          id: id
+          title: title
+        - actors:
+            list:
+            - movies:
+              - movies
+              - movies
+              gender: ""
+              name:
+                second_name: second_name
+                last_name: last_name
+                first_name: first_name
+              id: id
+              birthDate: 2000-01-23
+            - movies:
+              - movies
+              - movies
+              gender: ""
+              name:
+                second_name: second_name
+                last_name: last_name
+                first_name: first_name
+              id: id
+              birthDate: 2000-01-23
+          release_date: 2000-01-23
+          rating: 1
+          description: description
+          id: id
+          title: title
+    SortBy:
+      type: string
+      enum:
+      - title
+      - rating
+      - release_date
+      x-enum-varnames:
+      - title
+      - rating
+      - release_date
+    Search:
+      required:
+      - what
+      - where
+      type: object
+      properties:
+        where:
+          type: string
+          enum:
+          - title
+          - name
+          x-enum-varnames:
+          - title
+          - name
+        what:
+          type: string
+    Error:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+  parameters:
+    ActorId:
+      name: actor_id
+      in: query
+      required: true
+      style: form
+      explode: true
+      schema:
+        $ref: '#/components/schemas/ActorId'
+    MovieId:
+      name: movie_id
+      in: query
+      required: true
+      style: form
+      explode: true
+      schema:
+        $ref: '#/components/schemas/MovieId'
+    SortBy:
+      name: sort_by
+      in: query
+      required: false
+      style: form
+      explode: true
+      schema:
+        $ref: '#/components/schemas/SortBy'
+    Search:
+      name: sort_by
+      in: query
+      required: false
+      style: form
+      explode: true
+      schema:
+        $ref: '#/components/schemas/Search'
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: X-Api-Key
+      in: header
