@@ -3,4 +3,5 @@ CREATE TABLE IF NOT EXISTS actors (
     name VARCHAR(255) NOT NULL,
     gender ENUM('male', 'female', 'unknown') NOT NULL,
     birth_date DATE NOT NULL
+    movies TEXT
 );

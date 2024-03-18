@@ -2,25 +2,38 @@ package swagger
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
+
+	"github.com/lib/pq"
 )
 
-func getActorFromDB(db *sql.DB, actorID string) (*Actor, error) {
-	query := `SELECT id, name, gender, birth_date FROM actors WHERE id = ?`
-
-	stmt, err := db.Prepare(query)
-	if err != nil {
-		return nil, fmt.Errorf("failed to prepare statement: %w", err)
+func addActorToDB(db *sql.DB, actor Actor) (string, error) {
+	// Проверяем, что все необходимые поля заполнены.
+	if actor.Name == nil || actor.Gender == nil || actor.BirthDate == "" {
+		return "", errors.New("не все поля актера заполнены")
 	}
-	defer stmt.Close()
+
+	// Подготовка SQL-запроса для вставки актера.
+	query := `INSERT INTO actors (id, name, gender, birth_date, movies) VALUES ($1, $2, $3, $4, $5) RETURNING id`
+	var id string
+	err := db.QueryRow(query, actor.Id, actor.Name.FirstName, actor.Gender, actor.BirthDate, pq.Array(actor.Movies)).Scan(&id)
+	if err != nil {
+		return "", fmt.Errorf("ошибка при добавлении актера в базу данных: %w", err)
+	}
+
+	return id, nil
+}
+
+func getActorFromDB(db *sql.DB, actorID string) (*Actor, error) {
+	query := `SELECT id, name, gender, movies, birthDate FROM actors WHERE id = ?`
+	row := db.QueryRow(query, actorID)
 
 	var actor Actor
-	err = stmt.QueryRow(actorID).Scan(&actor.Id, &actor.Name, &actor.Gender, &actor.BirthDate)
+	err := row.Scan(&actor.Id, &actor.Name, &actor.Gender, pq.Array(&actor.Movies), &actor.BirthDate)
 	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, nil // Возвращаем nil, nil, если актер не найден
-		}
-		return nil, fmt.Errorf("failed to query actor: %w", err)
+		return nil, err
 	}
+
 	return &actor, nil
 }
