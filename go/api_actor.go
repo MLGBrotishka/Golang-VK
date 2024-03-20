@@ -17,14 +17,23 @@ import (
 func ActorDelete(w http.ResponseWriter, r *http.Request) {
 	db := r.Context().Value("db").(*sql.DB)
 	actorID := r.URL.Query().Get("actor_id")
+	if actorID == "" {
+		http.Error(w, "actor_id is required", http.StatusBadRequest)
+		return
+	}
 	err := deleteActorFromDB(db, actorID)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		if err == sql.ErrNoRows {
+			http.Error(w, "Actor not found", http.StatusNotFound)
+		} else {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("{}"))
 }
 
 func ActorGet(w http.ResponseWriter, r *http.Request) {
@@ -59,24 +68,49 @@ func ActorPost(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+	var id string
 	id, err = addActorToDB(db, actor)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	if err := json.NewEncoder(w).Encode(id); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	w.WriteHeader(http.StatusOK)
 }
 
 func ActorPut(w http.ResponseWriter, r *http.Request) {
 	db := r.Context().Value("db").(*sql.DB)
 	actorID := r.URL.Query().Get("actor_id")
+	if actorID == "" {
+		http.Error(w, "actor_id is required", http.StatusBadRequest)
+		return
+	}
+
 	var actor Actor
 	err := json.NewDecoder(r.Body).Decode(&actor)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+
+	err = updateActorInDB(db, actorID, actor)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			http.Error(w, "Actor not found", http.StatusNotFound)
+		} else {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+		return
+	}
+
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	if err := json.NewEncoder(w).Encode(actorID); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	w.WriteHeader(http.StatusOK)
 }
